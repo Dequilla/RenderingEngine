@@ -1,7 +1,7 @@
 #include "window.hpp"
 
 
-#ifdef __linux__
+#if defined(__linux__) && defined(__opengl__)
 #include <stdexcept>
 #include <cassert>
 #include <cstring>

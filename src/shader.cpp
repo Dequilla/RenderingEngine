@@ -1,6 +1,6 @@
 #include "shader.hpp"
 
-#ifdef __linux__
+#ifdef __opengl__
 #include <stdexcept>
 #include <fstream>
 #include <iostream>
@@ -184,4 +184,4 @@ namespace rg
 
 }
 
-#endif
+#endif // __opengl__

@@ -22,6 +22,8 @@ set(TARGET_COMPILE_FEATURES cxx_std_20)
 set(CMAKE_C_COMPILER "gcc-13")
 set(CMAKE_CXX_COMPILER "g++-13")
 
+option(RENDERER_OPENGL "Compile with OpenGL as rendering implementation." OFF)
+
 project(
     ${EXEC_NAME}
     VERSION 0.1
@@ -37,10 +39,17 @@ elseif(UNIX)
     add_compile_definitions(UNIX)
 endif()
 
+
+if(RENDERER_OPENGL)
+    add_compile_definitions(__opengl__)
+else()
+    message(FATAL_ERROR "No renderer selected when compiling. Set one of \"RENDERER_OPENGL\" to ON/TRUE")
+endif()
+
 set(CMAKE_CXX_FLAGS_DEBUG_INIT "-Wall -g -O3")
 set(CMAKE_CXX_FLAGS_RELEASE_INIT "-Wall -O0")
 
-######################################
+####k##################################
 # Libraries 
 ######################################
 
