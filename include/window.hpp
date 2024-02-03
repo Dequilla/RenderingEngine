@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "event.hpp"
+#include "color.hpp"
 
 namespace rg
 {
@@ -16,6 +17,9 @@ namespace rg
     public:
         Window(std::string title, uint32_t width, uint32_t height);
         ~Window();
+
+        void setTitle(const std::string& str);
+        void setClearColor(color::RGBAf color);
 
         void close();
 
