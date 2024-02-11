@@ -19,7 +19,6 @@ namespace rg
         ~Window();
 
         void setTitle(const std::string& str);
-        void setClearColor(color::RGBAf color);
 
         void close();
 
@@ -29,7 +28,6 @@ namespace rg
 
         void initFrame();
         void presentFrame();
-        void clear();
     };
 
 }

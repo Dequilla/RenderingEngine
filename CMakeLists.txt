@@ -7,8 +7,14 @@ set(SRC_DIR "src/")
 set(SOURCE_FILES 
     "main.cpp"
     "window.cpp"
+    "model.cpp"
     "shader.cpp"
-    "platform/opengl.cpp"
+    "renderer.cpp"
+
+    "platform/opengl/opengl.cpp"
+    "platform/opengl/glmodel.cpp"
+    "platform/opengl/glshader.cpp"
+    "platform/opengl/glrenderer3d.cpp"
 )
 
 # Transforms

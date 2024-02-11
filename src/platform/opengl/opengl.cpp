@@ -1,4 +1,4 @@
-#include "platform/opengl.hpp"
+#include "platform/opengl/opengl.hpp"
 
 #include <GL/glx.h>
 

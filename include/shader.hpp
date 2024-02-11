@@ -1,18 +1,15 @@
 #pragma once
+
+#include <memory>
 #include <vector>
 #include <filesystem>
+
 
 namespace rg
 {
 
-    class ShaderImpl;
-
     class Shader
     {
-        friend class ShaderProgram;
-
-        ShaderImpl* m_impl;
-
     public:
         enum class Type
         {
@@ -22,36 +19,28 @@ namespace rg
             COMPUTE
         };
 
-        Shader();
-        Shader(const Shader& other);
-        Shader(Shader&& other);
-        ~Shader();
+        virtual ~Shader() = default;
 
-        bool load(Shader::Type shaderType, const std::filesystem::path& source);
-        void unload();
+        virtual bool load(Shader::Type shaderType, const std::filesystem::path& source) = 0;
+        virtual void unload() = 0;
+
+        static std::unique_ptr<Shader> create();
     };
 
-    class ShaderProgramImpl;
 
     class ShaderProgram
     {
-        ShaderProgramImpl* m_impl;
-
-        std::vector<Shader> m_shaders;
-
     public:
-        ShaderProgram();
-        ShaderProgram(const ShaderProgram& other);
-        ShaderProgram(ShaderProgram&& other);
-        ~ShaderProgram();
+        virtual ~ShaderProgram() = default;
 
-        void attach(Shader shader);
-        bool finish();
-        void unload();
+        virtual void attach(const Shader& shader) = 0;
+        virtual bool finish() = 0;
+        virtual void unload() = 0;
 
-        void use();
+        virtual void use() = 0; 
+
+        static std::unique_ptr<ShaderProgram> create();
     };
 
-
-
+    
 }

@@ -126,10 +126,6 @@ namespace rg
         XFree(tp.value);
     }
 
-    void Window::setClearColor(color::RGBAf color)
-    {
-        glClearColor(color.r, color.g, color.b, color.a);
-    }
 
     void Window::close()
     {
@@ -173,11 +169,6 @@ namespace rg
     void Window::presentFrame()
     {
         glXSwapBuffers(m_windowImpl->display, m_windowImpl->window);
-    }
-
-    void Window::clear()
-    {
-        glClear(GL_COLOR_BUFFER_BIT);
     }
 
 }
