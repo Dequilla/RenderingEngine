@@ -29,6 +29,12 @@ namespace gl
     typedef void(*FP_GET_SHADER_INFO_LOG)(GLuint shader, GLsizei maxLength, GLsizei *length, GLchar *infoLog);
     extern FP_GET_SHADER_INFO_LOG getShaderInfoLog;
 
+    typedef void(*FP_UNIFORM_MATRIX4FV)(GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
+    extern FP_UNIFORM_MATRIX4FV uniformMatrix4fv;
+
+    typedef GLint(*FP_GET_UNIFORM_LOCATION)(GLuint program, const GLchar *name);
+    extern FP_GET_UNIFORM_LOCATION getUniformLocation;
+
     // Programs
     typedef GLuint(*FP_CREATE_PROGRAM)();
     extern FP_CREATE_PROGRAM createProgram;

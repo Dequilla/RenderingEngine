@@ -1,6 +1,5 @@
 #include "window.hpp"
 
-
 #if defined(__linux__) && defined(__opengl__)
 #include <stdexcept>
 #include <cassert>
@@ -23,6 +22,10 @@ namespace rg
         GLXContext glContext;
 
         bool isOpen = false;
+
+        // Events
+        uint64_t motionLast_x = 0;
+        uint64_t motionLast_y = 0;
     };
 
     Window::Window(std::string title, uint32_t width, uint32_t height)
@@ -154,6 +157,18 @@ namespace rg
                         close();
                         return true;
                     }
+                break;
+                case MotionNotify:
+                    event.type = EventType::Motion;
+                    event.motion.deltax = xevent.xmotion.x - m_windowImpl->motionLast_x;
+                    event.motion.deltay = xevent.xmotion.y - m_windowImpl->motionLast_y;
+
+                    event.motion.x = xevent.xmotion.x;
+                    event.motion.y = xevent.xmotion.y;
+
+                    m_windowImpl->motionLast_x = event.motion.x;
+                    m_windowImpl->motionLast_y = event.motion.y;
+                    return true;
                 break;
             }
         }

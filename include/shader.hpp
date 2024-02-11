@@ -4,6 +4,7 @@
 #include <vector>
 #include <filesystem>
 
+#include "glm/glm.hpp"
 
 namespace rg
 {
@@ -37,7 +38,9 @@ namespace rg
         virtual bool finish() = 0;
         virtual void unload() = 0;
 
-        virtual void use() = 0; 
+        virtual void use() const = 0; 
+
+        virtual void setMat4(const std::string& name, const glm::mat4& matrix) const = 0;
 
         static std::unique_ptr<ShaderProgram> create();
     };

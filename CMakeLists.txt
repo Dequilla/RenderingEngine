@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.21)
 
 #####################
 set(EXEC_NAME "RenderingEngine")
-set(INC_DIR "include/")
+set(INC_DIR "include/" "vendor/")
 set(SRC_DIR "src/")
 set(SOURCE_FILES 
     "main.cpp"
@@ -19,7 +19,6 @@ set(SOURCE_FILES
 
 # Transforms
 list(TRANSFORM SOURCE_FILES PREPEND ${SRC_DIR})
-list(TRANSFORM INCLUDE_FILES PREPEND ${INC_DIR})
 
 # Compiler 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++2a")

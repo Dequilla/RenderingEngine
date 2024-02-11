@@ -42,7 +42,9 @@ namespace rg::opengl
         virtual bool finish() override;
         virtual void unload() override;
 
-        virtual void use() override;
+        virtual void use() const override;
+
+        virtual void setMat4(const std::string& name, const glm::mat4& matrix) const override;
     };
 
 }

@@ -149,10 +149,25 @@ namespace rg::opengl
         gl::deleteProgram(m_id);
     }
 
-    void GLShaderProgram::use()
+    void GLShaderProgram::use() const
     {
         gl::useProgram(m_id);
     }
+
+    void GLShaderProgram::setMat4(const std::string& name, const glm::mat4& matrix) const
+    {
+        gl::uniformMatrix4fv(
+            gl::getUniformLocation(
+                m_id, 
+                name.c_str()
+            ), 
+            1, 
+            GL_FALSE,
+            &matrix[0][0]
+        );
+    }
+
+ 
 
 }
 

@@ -27,4 +27,13 @@ namespace rg
         static std::unique_ptr<Mesh> create(const VertexBuffer& vertices, const IndexBuffer& indices);
     };
 
+    // TODO
+    class Model
+    {
+    protected:
+        std::vector<std::unique_ptr<Mesh>> m_meshes;
+
+    public:
+    };
+
 }

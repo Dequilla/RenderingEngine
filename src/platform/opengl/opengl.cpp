@@ -15,13 +15,16 @@ namespace gl
     FP_ATTACH_SHADER attachShader;
     FP_GET_SHADER_IV getShaderiv;
     FP_GET_SHADER_INFO_LOG getShaderInfoLog;
-
+    
     FP_CREATE_PROGRAM createProgram;
     FP_LINK_PROGRAM linkProgram;
     FP_GET_PROGRAM_IV getProgramiv;
     FP_GET_PROGRAM_INFO_LOG getProgramInfoLog;
     FP_DELETE_PROGRAM deleteProgram;
     FP_USE_PROGRAM useProgram;
+
+    FP_UNIFORM_MATRIX4FV uniformMatrix4fv;
+    FP_GET_UNIFORM_LOCATION getUniformLocation;
 
     FP_GEN_VERTEX_ARRAYS genVertexArrays;
     FP_BIND_VERTEX_ARRAY bindVertexArray;
@@ -62,6 +65,9 @@ namespace gl
         getProgramInfoLog = (FP_GET_PROGRAM_INFO_LOG)getProcAddress("glGetProgramInfoLog");
         deleteProgram = (FP_DELETE_PROGRAM)getProcAddress("glDeleteProgram");
         useProgram = (FP_USE_PROGRAM)getProcAddress("glUseProgram");
+
+        uniformMatrix4fv = (FP_UNIFORM_MATRIX4FV)getProcAddress("glUniformMatrix4fv");
+        getUniformLocation = (FP_GET_UNIFORM_LOCATION)getProcAddress("glGetUniformLocation");
 
         genVertexArrays = (FP_GEN_VERTEX_ARRAYS)getProcAddress("glGenVertexArrays");
         bindVertexArray = (FP_BIND_VERTEX_ARRAY)getProcAddress("glBindVertexArray");
