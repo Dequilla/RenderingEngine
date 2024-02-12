@@ -4,8 +4,8 @@
 
 #include "model.hpp"
 #include "platform/opengl/opengl.hpp"
-#include "platform/opengl/glmodel.hpp"
-#include "platform/opengl/glrenderer3d.hpp"
+#include "platform/opengl/gl_model.hpp"
+#include "platform/opengl/gl_renderer3d.hpp"
 
 namespace rg::opengl
 {

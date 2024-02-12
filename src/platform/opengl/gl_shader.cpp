@@ -1,4 +1,4 @@
-#include "platform/opengl/glshader.hpp"
+#include "platform/opengl/gl_shader.hpp"
 
 #ifdef __opengl__
 #include <stdexcept>

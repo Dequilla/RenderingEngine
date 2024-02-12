@@ -1,7 +1,7 @@
 #include "shader.hpp"
 
 #ifdef __opengl__
-#include "platform/opengl/glshader.hpp"
+#include "platform/opengl/gl_shader.hpp"
 #endif
 
 namespace rg

@@ -20,12 +20,13 @@ const size_t HEIGHT = 720;
 int main()
 {
     rg::Window window("A short title!", WIDTH, HEIGHT);
-    std::unique_ptr<rg::Renderer3D> renderer = rg::Renderer3D::create();
+    window.grabMouse(true);
 
     gl::initProcs();
 
     rg::Camera camera;
 
+    std::unique_ptr<rg::Renderer3D> renderer = rg::Renderer3D::create();
     renderer->init();
     renderer->setClearColor( {0.2f, 0.3f, 0.3f, 1.0f} );
 

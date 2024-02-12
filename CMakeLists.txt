@@ -11,10 +11,12 @@ set(SOURCE_FILES
     "shader.cpp"
     "renderer.cpp"
 
+    "platform/x11/x11_window.cpp"
+
     "platform/opengl/opengl.cpp"
-    "platform/opengl/glmodel.cpp"
-    "platform/opengl/glshader.cpp"
-    "platform/opengl/glrenderer3d.cpp"
+    "platform/opengl/gl_model.cpp"
+    "platform/opengl/gl_shader.cpp"
+    "platform/opengl/gl_renderer3d.cpp"
 )
 
 # Transforms
@@ -28,6 +30,7 @@ set(CMAKE_C_COMPILER "gcc-13")
 set(CMAKE_CXX_COMPILER "g++-13")
 
 option(RENDERER_OPENGL "Compile with OpenGL as rendering implementation." OFF)
+option(WINDOW_MGR_X11 "Compile with x11 as window manager." ON)
 
 project(
     ${EXEC_NAME}
@@ -44,6 +47,11 @@ elseif(UNIX)
     add_compile_definitions(UNIX)
 endif()
 
+if(WINDOW_MGR_X11)
+    add_compile_definitions(__x11__)
+else()
+    message(FATAL_ERROR "No window manager selected. Set one of \"WINDOW_MGR_X11\" to ON/TRUE")
+endif()
 
 if(RENDERER_OPENGL)
     add_compile_definitions(__opengl__)

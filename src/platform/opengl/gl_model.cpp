@@ -1,6 +1,6 @@
 #ifdef __opengl__
 
-#include "platform/opengl/glmodel.hpp"
+#include "platform/opengl/gl_model.hpp"
 #include "platform/opengl/opengl.hpp"
 
 namespace rg::opengl

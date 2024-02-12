@@ -1,7 +1,7 @@
 #include "renderer.hpp"
 
 #ifdef __opengl__
-#include "platform/opengl/glrenderer3d.hpp"
+#include "platform/opengl/gl_renderer3d.hpp"
 #endif
 
 namespace rg

@@ -1,7 +1,7 @@
 #include "model.hpp"
 
 #ifdef __opengl__
-#include "platform/opengl/glmodel.hpp"
+#include "platform/opengl/gl_model.hpp"
 #endif
 
 namespace rg
