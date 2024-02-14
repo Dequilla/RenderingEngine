@@ -24,7 +24,7 @@ namespace rg
         virtual ~WindowImpl() = default;
 
         virtual void setTitle(const std::string& str) = 0;
-        virtual bool grabMouse(bool grab) = 0;
+        virtual void grabMouse(bool grab) = 0;
         virtual void setCursorVisible(bool visible) = 0;
 
         virtual void close() = 0;
@@ -48,7 +48,7 @@ namespace rg
         ~Window();
 
         void setTitle(const std::string& str);
-        bool grabMouse(bool grab);
+        void grabMouse(bool grab);
         void setCursorVisible(bool visible);
 
         void close();

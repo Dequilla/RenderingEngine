@@ -7,6 +7,8 @@ namespace rg
     enum class EventType
     {
         Close,
+        FocusGain,
+        FocusLost,
         Motion
     };
 

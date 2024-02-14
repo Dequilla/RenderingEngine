@@ -4,6 +4,51 @@
 
 namespace rg
 {
+    void WindowImplX11::createCursors()
+    {
+        const Pixmap cursorPixmap = XCreatePixmap(m_display, m_window, 1, 1, 1);
+        GC graphicsContext = XCreateGC(m_display, cursorPixmap, 0, nullptr);
+        XDrawPoint(m_display, cursorPixmap, graphicsContext, 0, 0);
+        XFreeGC(m_display, graphicsContext);
+
+        XColor color;
+        color.flags = DoRed | DoGreen | DoBlue;
+        color.red = color.blue = color.green = 0;
+        m_cursorHidden = XCreatePixmapCursor(m_display, cursorPixmap, cursorPixmap, &color, &color, 0, 0);
+
+        XFreePixmap(m_display, cursorPixmap);
+    }
+
+    bool WindowImplX11::grabPointer()
+    {
+        int result;
+        for (int attempts = 0; attempts < 100; attempts++) {
+            result = ::XGrabPointer(
+                m_display,
+                m_window, 
+                True, 
+                None, 
+                GrabModeAsync, 
+                GrabModeAsync, 
+                m_window, 
+                None, 
+                CurrentTime
+            );
+
+            if(result == GrabSuccess)
+                return true;
+            
+            std::this_thread::sleep_for(std::chrono::milliseconds(50));
+        }
+
+        return false;
+    }
+
+    void WindowImplX11::ungrabPointer()
+    {
+        XUngrabPointer(m_display, CurrentTime);
+    }
+
     WindowImplX11::WindowImplX11(std::string title, uint32_t width, uint32_t height)
         : WindowImpl(title, width, height)
     {
@@ -50,7 +95,7 @@ namespace rg
         m_attrs.background_pixel = WhitePixel(m_display, m_screenId);
         m_attrs.override_redirect = True;
         m_attrs.colormap = XCreateColormap(m_display, RootWindow(m_display, m_screenId), visualInfo->visual, AllocNone);
-        m_attrs.event_mask = KeyPressMask | KeyReleaseMask | PointerMotionMask; 
+        m_attrs.event_mask = KeyPressMask | KeyReleaseMask | PointerMotionMask | FocusChangeMask; 
 
         m_window = XCreateWindow(m_display, RootWindow(m_display, m_screenId), 0, 0, width, height, 0, CopyFromParent, InputOutput, CopyFromParent, CWEventMask, &m_attrs);
 
@@ -63,6 +108,8 @@ namespace rg
         setTitle(title);
         m_width = width;
         m_height = height;
+
+        createCursors();
 
         // Create GLX OpenGL context
         m_glContext = glXCreateContext(m_display, visualInfo, NULL, GL_TRUE);
@@ -104,55 +151,28 @@ namespace rg
         XFree(tp.value);
     }
 
-    bool WindowImplX11::grabMouse(bool grab)
+    void WindowImplX11::grabMouse(bool grab)
     {
+        if(m_mouseGrabbed == grab) return;
+
         if(grab)
         {
-            const unsigned int mask = ButtonPressMask | ButtonReleaseMask | PointerMotionMask | FocusChangeMask;
-            int result;
-            for (int attempts = 0; attempts < 100; attempts++) {
-                result = ::XGrabPointer(
-                    m_display,
-                    m_window, 
-                    True, 
-                    None, 
-                    GrabModeAsync, 
-                    GrabModeAsync, 
-                    m_window, 
-                    None, 
-                    CurrentTime
-                );
-
-                if(result == GrabSuccess)
-                    break;
-                
-                std::this_thread::sleep_for(std::chrono::milliseconds(50));
-            }
-
-            if(result == GrabSuccess)
+            if(grabPointer())
             {
                 m_mouseGrabbed = true;
-                return true;
-            }
-            else
-            {
-                m_mouseGrabbed = false;
-                return false;
             }
         }
         else
         {
-            // TODO ungrab
-            throw std::runtime_error("not implemented");
-            return false;
+            ungrabPointer();
+            m_mouseGrabbed = false;
         }
     }
 
     void WindowImplX11::setCursorVisible(bool visible)
     {
-        // XDefineCursor(m_windowImpl->display, m_windowImpl->window, visible ? m_lastCursor : m_hiddenCursor);
-        // XFlush(m_display.get());
-        throw std::runtime_error("not implemented \"setCursorVisible\"");
+        XDefineCursor(m_display, m_window, visible ? m_cursorDefault : m_cursorHidden);
+        XFlush(m_display);
     }
 
     void WindowImplX11::close() 
@@ -176,15 +196,23 @@ namespace rg
             XNextEvent(m_display, &xevent);
             switch(xevent.type) {
 
-                // Client messages (ex. window)
                 case ClientMessage:
+                {
                     if(xevent.xclient.data.l[0] == m_wm_delete_window) {
                         event.type = EventType::Close;
                     }
-                break;
 
-                // Motions (ex. mouse move)
+                    break;
+                }
+
                 case MotionNotify:
+                {
+                    if(m_ignoreNextMotion)
+                    {
+                        m_ignoreNextMotion = false;
+                        break;
+                    }
+
                     event.type = EventType::Motion;
                     event.motion.deltax = xevent.xmotion.x - m_motionLast_x;
                     event.motion.deltay = xevent.xmotion.y - m_motionLast_y;
@@ -195,12 +223,33 @@ namespace rg
                     m_motionLast_x = event.motion.x;
                     m_motionLast_y = event.motion.y;
 
-                    // TODO
                     if(m_mouseGrabbed)
                     {
-                        //XWarpPointer(m_windowImpl->display, None, m_windowImpl->window, 0, 0, 0, 0, m_width / 2, m_height / 2);
+                        // Warp mouse to center
+                        XWarpPointer(m_display, None, m_window, 0, 0, 0, 0, m_width / 2, m_height / 2);
+                        m_ignoreNextMotion = true;
                     }
-                break;
+
+                    break;
+                }
+
+                case FocusIn:
+                {
+                    event.type = EventType::FocusGain;
+
+                    if(m_mouseGrabbed)
+                        grabPointer();
+
+                    break;
+                }
+
+                case FocusOut:
+                {
+                    event.type = EventType::FocusLost;
+
+                    if(m_mouseGrabbed)
+                        ungrabPointer();
+                }
                 
             } // switch(xevent.type)
               

@@ -89,6 +89,12 @@ int main()
                 case rg::EventType::Motion:
                     camera.update(event.motion.deltax, event.motion.deltay);
                     break;
+                case rg::EventType::FocusGain:
+                    std::cout << "Gained focus!" << std::endl;
+                    break;
+                case rg::EventType::FocusLost:
+                    std::cout << "Lost focus!" << std::endl;
+                    break;
             }
         }
 

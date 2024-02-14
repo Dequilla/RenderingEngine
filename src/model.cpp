@@ -10,7 +10,7 @@ namespace rg
 
     std::unique_ptr<Mesh> Mesh::create(const VertexBuffer& vertices, const IndexBuffer& indices)
     {
-        return std::make_unique<RG_MODEL_IMP>(vertices, indices);
+        return std::make_unique<RG_MODEL_IMPL>(vertices, indices);
     }
 
 }

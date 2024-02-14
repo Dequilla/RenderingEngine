@@ -31,12 +31,20 @@ namespace rg
       uint64_t m_motionLast_x = 0;
       uint64_t m_motionLast_y = 0;
 
+      ::Cursor m_cursorHidden {};
+      ::Cursor m_cursorDefault { None };
+      void createCursors();
+
+      bool m_ignoreNextMotion = false;
+      bool grabPointer();
+      void ungrabPointer();
+
    public:
       WindowImplX11(std::string title, uint32_t width, uint32_t height);
       virtual ~WindowImplX11() override;
 
       virtual void setTitle(const std::string& str) override;
-      virtual bool grabMouse(bool grab) override;
+      virtual void grabMouse(bool grab) override;
       virtual void setCursorVisible(bool visible) override;
 
       virtual void close() override;
