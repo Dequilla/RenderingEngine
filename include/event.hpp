@@ -1,6 +1,8 @@
 #pragma once 
 #include <cstdint>
 
+#include "keyboard.hpp"
+
 namespace rg
 {
 
@@ -9,7 +11,9 @@ namespace rg
         Close,
         FocusGain,
         FocusLost,
-        Motion
+        Motion,
+        KeyPressed,
+        KeyReleased
     };
 
     struct MotionEvent
@@ -21,6 +25,13 @@ namespace rg
         int64_t deltay;
     };
 
+    struct KeyboardEvent
+    {
+        // TODO: Implement scancodes (physical device independent key presses and relases)
+        KeyCode code;
+        bool pressed;
+    };
+
     class Event
     {
     public:
@@ -28,6 +39,7 @@ namespace rg
 
         union {
             MotionEvent motion;
+            KeyboardEvent key;
         };
     };
 }

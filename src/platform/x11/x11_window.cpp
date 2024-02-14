@@ -261,6 +261,20 @@ namespace rg
                     if(m_mouseGrabbed)
                         ungrabPointer();
                 }
+
+                case KeyPress:
+                {
+                    event.type = EventType::KeyPressed;
+                    event.key.code = static_cast<rg::KeyCode>(xevent.xkey.keycode);
+                    break;
+                }
+
+                case KeyRelease:
+                {
+                    event.type = EventType::KeyPressed;
+                    event.key.code = static_cast<rg::KeyCode>(xevent.xkey.keycode);
+                    break;
+                }
                 
             } // switch(xevent.type)
               
