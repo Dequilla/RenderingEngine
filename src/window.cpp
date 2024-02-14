@@ -36,9 +36,14 @@ namespace rg
         m_impl->setTitle(str);       
     }
 
-    void Window::grabMouse(bool grab)
+    void Window::setCursorGrabbed(bool grab)
     {
-        m_impl->grabMouse(grab); 
+        m_impl->setCursorGrabbed(grab); 
+    }
+
+    void Window::setCursorFixed(bool fixed)
+    {
+        m_impl->setCursorFixed(fixed);
     }
 
     void Window::setCursorVisible(bool visible)

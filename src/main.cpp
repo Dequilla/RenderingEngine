@@ -20,7 +20,9 @@ const size_t HEIGHT = 720;
 int main()
 {
     rg::Window window("A short title!", WIDTH, HEIGHT);
-    window.grabMouse(true);
+    window.setCursorGrabbed(true);
+    window.setCursorVisible(false);
+    window.setCursorFixed(true);
 
     gl::initProcs();
 
@@ -87,7 +89,7 @@ int main()
                     std::cout << "Closing window..." << std::endl;
                     break;
                 case rg::EventType::Motion:
-                    camera.update(event.motion.deltax, event.motion.deltay);
+                    camera.update(event.motion.deltax, -event.motion.deltay, 0.01);
                     break;
                 case rg::EventType::FocusGain:
                     std::cout << "Gained focus!" << std::endl;

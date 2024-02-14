@@ -44,7 +44,8 @@ namespace rg
       virtual ~WindowImplX11() override;
 
       virtual void setTitle(const std::string& str) override;
-      virtual void grabMouse(bool grab) override;
+      virtual void setCursorGrabbed(bool grab) override;
+      virtual void setCursorFixed(bool fixed) override;
       virtual void setCursorVisible(bool visible) override;
 
       virtual void close() override;

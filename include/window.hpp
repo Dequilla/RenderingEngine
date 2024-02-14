@@ -16,6 +16,7 @@ namespace rg
         std::deque<Event> m_eventQueue;
 
         bool m_mouseGrabbed = false;
+        bool m_mouseFixed = false;
         uint32_t m_width = 0;
         uint32_t m_height = 0;
 
@@ -24,7 +25,8 @@ namespace rg
         virtual ~WindowImpl() = default;
 
         virtual void setTitle(const std::string& str) = 0;
-        virtual void grabMouse(bool grab) = 0;
+        virtual void setCursorGrabbed(bool grab) = 0;
+        virtual void setCursorFixed(bool fixed) = 0;
         virtual void setCursorVisible(bool visible) = 0;
 
         virtual void close() = 0;
@@ -48,7 +50,8 @@ namespace rg
         ~Window();
 
         void setTitle(const std::string& str);
-        void grabMouse(bool grab);
+        void setCursorGrabbed(bool grab);
+        void setCursorFixed(bool fixed);
         void setCursorVisible(bool visible);
 
         void close();

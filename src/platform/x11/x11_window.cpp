@@ -151,7 +151,7 @@ namespace rg
         XFree(tp.value);
     }
 
-    void WindowImplX11::grabMouse(bool grab)
+    void WindowImplX11::setCursorGrabbed(bool grab)
     {
         if(m_mouseGrabbed == grab) return;
 
@@ -167,6 +167,11 @@ namespace rg
             ungrabPointer();
             m_mouseGrabbed = false;
         }
+    }
+    
+    void WindowImplX11::setCursorFixed(bool fixed)
+    {
+        m_mouseFixed = fixed;
     }
 
     void WindowImplX11::setCursorVisible(bool visible)
@@ -220,14 +225,20 @@ namespace rg
                     event.motion.x = xevent.xmotion.x;
                     event.motion.y = xevent.xmotion.y;
 
-                    m_motionLast_x = event.motion.x;
-                    m_motionLast_y = event.motion.y;
-
-                    if(m_mouseGrabbed)
+                    if(m_mouseFixed)
                     {
+                        uint32_t centerx = m_width / 2;
+                        uint32_t centery = m_height / 2;
                         // Warp mouse to center
-                        XWarpPointer(m_display, None, m_window, 0, 0, 0, 0, m_width / 2, m_height / 2);
+                        XWarpPointer(m_display, None, m_window, 0, 0, 0, 0, centerx, centery);
                         m_ignoreNextMotion = true;
+                        m_motionLast_x = centerx;
+                        m_motionLast_y = centery;
+                    }
+                    else
+                    {
+                        m_motionLast_x = event.motion.x;
+                        m_motionLast_y = event.motion.y;
                     }
 
                     break;
