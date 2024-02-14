@@ -2,6 +2,8 @@
 
 #if defined(__x11__) && defined(__opengl__)
 
+#include "platform/x11/x11_keyboard.hpp"
+
 namespace rg
 {
     void WindowImplX11::createCursors()
@@ -265,14 +267,14 @@ namespace rg
                 case KeyPress:
                 {
                     event.type = EventType::KeyPressed;
-                    event.key.code = static_cast<rg::KeyCode>(xevent.xkey.keycode);
+                    event.key.code = rg::x11::getKeyCode(&xevent.xkey);
                     break;
                 }
 
                 case KeyRelease:
                 {
                     event.type = EventType::KeyPressed;
-                    event.key.code = static_cast<rg::KeyCode>(xevent.xkey.keycode);
+                    event.key.code = rg::x11::getKeyCode(&xevent.xkey);
                     break;
                 }
                 

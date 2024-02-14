@@ -90,21 +90,30 @@ int main()
                     break;
 
                 case rg::EventType::Motion:
-                    camera.update(event.motion.deltax, -event.motion.deltay, 0.01);
+                    camera.update_rotation(event.motion.deltax, -event.motion.deltay, 0.01);
                     break;
 
                 case rg::EventType::FocusGain:
-                    std::cout << "Gained focus!" << std::endl;
+                    //std::cout << "Gained focus!" << std::endl;
                     break;
                 case rg::EventType::FocusLost:
-                    std::cout << "Lost focus!" << std::endl;
+                    //std::cout << "Lost focus!" << std::endl;
                     break;
 
                 case rg::EventType::KeyPressed:
-                    std::cout << "KeyPressed: " << (int)event.key.code << std::endl;
+                    if(event.key.code == rg::KeyCode::w)
+                        camera.move_forward(1.f);   
+                    else if(event.key.code == rg::KeyCode::s)
+                        camera.move_forward(-1.f);
+
+                    else if(event.key.code == rg::KeyCode::a)
+                        camera.move_sideways(-1.f);
+                    else if(event.key.code == rg::KeyCode::d)
+                        camera.move_sideways(1.f);
+
                     break;
+
                 case rg::EventType::KeyReleased:
-                    std::cout << "KeyReleased: " << (int)event.key.code << std::endl;
                     break;
             }
         }

@@ -17,7 +17,7 @@ namespace rg
         float pitch =  0.0f;
 
     public:
-        inline void update(float deltax, float deltay, float sensativity = 0.1f)
+        inline void update_rotation(float deltax, float deltay, float sensativity = 0.1f)
         {
             yaw += deltax * sensativity;
             pitch += deltay * sensativity;
@@ -32,8 +32,16 @@ namespace rg
             tfront.y = sin(glm::radians(pitch));
             tfront.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
             front = glm::normalize(tfront);
-            
-            std::cout << "Updated camera: " << deltax << ", " << deltay << std::endl;
+        }
+
+        inline void move_forward(float speed)
+        {
+            position += speed * front;
+        }
+
+        inline void move_sideways(float speed)
+        {
+            position += glm::normalize(glm::cross(front, up)) * speed;
         }
 
         inline glm::mat4 getViewMatrix() const
