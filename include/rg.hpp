@@ -14,6 +14,7 @@
 #include "system/event.hpp"
 #include "system/keyboard.hpp"
 #include "system/keycode.hpp"
+#include "system/clock.hpp"
 
 // Graphics
 #include "graphics/renderer.hpp"

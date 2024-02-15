@@ -12,6 +12,7 @@ set(SOURCE_FILES
     "graphics/renderer.cpp"
 
     "system/window.cpp"
+    "system/clock.cpp"
 
     "platform/x11/x11_window.cpp"
 

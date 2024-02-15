@@ -67,6 +67,10 @@ int main()
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
     sprogram->setMat4("model", model); 
+    
+    uint32_t accumilator = 0;
+    rg::Clock clock;
+    rg::ClockState clockState;
 
     while(window.isOpen())
     {
@@ -117,6 +121,15 @@ int main()
         renderer->draw(*mesh);
 
         window.presentFrame();
+
+        clockState = clock.restart();
+        accumilator += 1;
+        if(accumilator >= 100)
+        {
+            accumilator = 0;
+            std::cout << "Frame time: " << clockState.elapsed().milliseconds() << std::endl;
+        }
+
     }
     
     sprogram->unload();
