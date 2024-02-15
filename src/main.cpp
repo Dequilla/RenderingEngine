@@ -1,15 +1,4 @@
-#include "platform/opengl/opengl.hpp"
-
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
-#include "glm/gtc/type_ptr.hpp"
-
-#include "system/window.hpp"
-
-#include "graphics/model.hpp"
-#include "graphics/renderer.hpp"
-#include "graphics/shader.hpp"
-#include "graphics/camera.hpp"
+#include "rg.hpp"
 
 #include <iostream>
 #include <cassert>
