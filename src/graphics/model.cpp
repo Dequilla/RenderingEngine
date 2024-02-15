@@ -1,4 +1,4 @@
-#include "model.hpp"
+#include "graphics/model.hpp"
 
 #ifdef __opengl__
 #include "platform/opengl/gl_model.hpp"

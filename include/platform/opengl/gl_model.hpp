@@ -3,7 +3,7 @@
 
 #ifdef __opengl__
 
-#include "model.hpp"
+#include "graphics/model.hpp"
 #include "platform/opengl/opengl.hpp"
 
 namespace rg::opengl

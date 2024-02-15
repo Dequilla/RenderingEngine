@@ -6,10 +6,12 @@ set(INC_DIR "include/" "vendor/")
 set(SRC_DIR "src/")
 set(SOURCE_FILES 
     "main.cpp"
-    "window.cpp"
-    "model.cpp"
-    "shader.cpp"
-    "renderer.cpp"
+
+    "graphics/model.cpp"
+    "graphics/shader.cpp"
+    "graphics/renderer.cpp"
+
+    "system/window.cpp"
 
     "platform/x11/x11_window.cpp"
 

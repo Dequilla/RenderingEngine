@@ -4,7 +4,7 @@
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 
-#include "keycode.hpp"
+#include "system/keycode.hpp"
 
 namespace rg::x11
 {

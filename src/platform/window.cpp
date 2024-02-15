@@ -1,4 +1,4 @@
-#include "window.hpp"
+#include "system/window.hpp"
 
 #if defined(__linux__) && defined(__opengl__)
 #include "platform/x11/x11_window.hpp"

@@ -7,11 +7,11 @@
 #include <chrono>
 #include <thread>
 
-#include "X11/Xlib.h"
+#include <X11/Xlib.h>
 #include <GL/gl.h>
 #include <GL/glx.h>
 
-#include "window.hpp"
+#include "system/window.hpp"
 
 namespace rg
 {

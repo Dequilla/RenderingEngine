@@ -4,11 +4,12 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
-#include "window.hpp"
-#include "model.hpp"
-#include "renderer.hpp"
-#include "shader.hpp"
-#include "camera.hpp"
+#include "system/window.hpp"
+
+#include "graphics/model.hpp"
+#include "graphics/renderer.hpp"
+#include "graphics/shader.hpp"
+#include "graphics/camera.hpp"
 
 #include <iostream>
 #include <cassert>

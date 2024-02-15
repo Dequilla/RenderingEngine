@@ -1,6 +1,6 @@
 #pragma once
 
-#include "keycode.hpp"
+#include "system/keycode.hpp"
 
 namespace rg
 {

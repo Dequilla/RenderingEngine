@@ -1,8 +1,8 @@
-#include "renderer.hpp"
+#include "graphics/renderer.hpp"
 
 #ifdef __opengl__
 
-#include "model.hpp"
+#include "graphics/model.hpp"
 #include "platform/opengl/opengl.hpp"
 #include "platform/opengl/gl_model.hpp"
 #include "platform/opengl/gl_renderer3d.hpp"

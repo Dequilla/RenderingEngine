@@ -1,4 +1,4 @@
-#include "renderer.hpp"
+#include "graphics/renderer.hpp"
 
 #ifdef __opengl__
 #include "platform/opengl/gl_renderer3d.hpp"

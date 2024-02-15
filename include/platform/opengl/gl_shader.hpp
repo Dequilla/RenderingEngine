@@ -2,7 +2,7 @@
 #include <vector>
 #include <filesystem>
 
-#include "shader.hpp"
+#include "graphics/shader.hpp"
 
 #ifdef __opengl__
 #include "platform/opengl/opengl.hpp"

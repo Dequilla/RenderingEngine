@@ -1,7 +1,7 @@
 #pragma once 
 #include <cstdint>
 
-#include "keyboard.hpp"
+#include "system/keyboard.hpp"
 
 namespace rg
 {

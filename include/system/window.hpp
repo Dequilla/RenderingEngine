@@ -4,8 +4,8 @@
 #include <deque>
 #include <memory>
 
-#include "event.hpp"
-#include "color.hpp"
+#include "system/event.hpp"
+#include "graphics/color.hpp"
 
 namespace rg
 {
