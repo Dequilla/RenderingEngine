@@ -18,7 +18,7 @@ namespace rg::opengl
         gl::bufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
 
         gl::bindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
-        gl::bufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(uint32_t), indices.data(), GL_STATIC_DRAW);
+        gl::bufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(rg::Index), indices.data(), GL_STATIC_DRAW);
 
         gl::vertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
         gl::enableVertexAttribArray(0);

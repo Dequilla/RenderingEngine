@@ -26,6 +26,7 @@ namespace rg
         virtual void clear() = 0;
 
         virtual void draw(const Mesh& mesh) = 0;
+        virtual void draw(const Model& model) = 0;
 
         static std::unique_ptr<Renderer3D> create();
     };

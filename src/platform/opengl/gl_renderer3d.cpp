@@ -43,6 +43,15 @@ namespace rg::opengl
         gl::bindVertexArray(0);
     }
 
+    void GLRenderer3D::draw(const Model& model)
+    {
+        for( const std::unique_ptr<rg::Mesh>& mesh : model.meshes() )
+        {
+            draw(*mesh);
+        }
+    }
+
+
 }
 
 #endif // __opengl__

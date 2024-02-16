@@ -1,5 +1,7 @@
 #include "rg.hpp"
 
+#include "graphics/model_formats/wavefront_obj.hpp"
+
 #include <iostream>
 #include <cassert>
 #include <memory>
@@ -9,12 +11,26 @@ const size_t HEIGHT = 720;
 
 int main()
 {
+    // --------------------
+
     rg::Window window("A short title!", WIDTH, HEIGHT);
     window.setCursorGrabbed(true);
     window.setCursorVisible(false);
     window.setCursorFixed(true);
 
     gl::initProcs();
+
+    rg::WavefrontOBJ_ModelLoader objLoader;
+    //std::optional<rg::Model> objmodel = objLoader.load("./models/Square/square_quads.obj");
+    //std::optional<rg::Model> objmodel = objLoader.load("./models/Duck/12248_Bird_v1_L2.obj");
+    std::optional<rg::Model> objmodel = objLoader.load("./models/Church/church.obj");
+    if(objmodel.has_value())
+        std::cout << "Loaded duck model." << std::endl;
+    else
+    {
+        std::cout << "Could not load duck model." << std::endl;
+        return -1;
+    }
 
     rg::Camera camera;
 
@@ -68,6 +84,9 @@ int main()
     model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
     sprogram->setMat4("model", model); 
     
+    //glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ); // Wireframe mode
+    glPolygonMode( GL_FRONT_AND_BACK, GL_FILL ); // Normal mode
+
     uint32_t accumilator = 0;
     rg::Clock clock;
     rg::ClockState clockState;
@@ -118,7 +137,8 @@ int main()
 
         sprogram->use();
         sprogram->setMat4("view", camera.getViewMatrix());
-        renderer->draw(*mesh);
+        //renderer->draw(*mesh);
+        renderer->draw(objmodel.value());
 
         window.presentFrame();
 
@@ -129,7 +149,6 @@ int main()
             accumilator = 0;
             std::cout << "Frame time: " << clockState.elapsed().milliseconds() << std::endl;
         }
-
     }
     
     sprogram->unload();

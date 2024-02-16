@@ -11,6 +11,8 @@ set(SOURCE_FILES
     "graphics/shader.cpp"
     "graphics/renderer.cpp"
 
+    "graphics/model_formats/wavefront_obj.cpp"
+
     "system/window.cpp"
     "system/clock.cpp"
 

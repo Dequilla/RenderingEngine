@@ -15,6 +15,8 @@ namespace rg::opengl
         virtual void clear() override;
 
         virtual void draw(const Mesh& mesh) override;
+        virtual void draw(const Model& model) override;
+
     };
 }
 
