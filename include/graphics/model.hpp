@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <filesystem>
 #include <optional>
+#include <iostream>
 
 namespace rg
 {
@@ -18,12 +19,54 @@ namespace rg
             float y;
             float z;
         } position;
+
+        struct Normal
+        {
+            float x;
+            float y;
+            float z;
+        } normal;
     };
 
     using VertexBuffer = std::vector<Vertex>;
     using IndexBuffer = std::vector<Index>;
 
-    IndexBuffer triangulate(const IndexBuffer& indexBuffer);
+    template<typename Type>
+    std::vector<Type> triangulate(const std::vector<Type>& buffer)
+    {
+        // p1---p2
+        // |  ./|
+        // | /  |
+        // p4---p3
+        // 
+        // 
+        // T1 = p1, p2, p4 
+        // T2 = p4, p2, p3
+        //
+        // From quad to triangles
+        if(buffer.size() % 4 != 0)
+        {
+            std::cout << "Warning: Can not triangulate buffer, indices not divisble by 4 (already triangles?)." << std::endl;
+            return buffer;
+        }
+
+        std::vector<Type> newBuffer;
+
+        for( size_t index = 0; (index + 3) < buffer.size(); index += 4 )
+        {
+            // First triangle
+            newBuffer.push_back(buffer[index]);
+            newBuffer.push_back(buffer[index + 1]);
+            newBuffer.push_back(buffer[index + 3]);
+
+            // Second triangle
+            newBuffer.push_back(buffer[index + 3]);
+            newBuffer.push_back(buffer[index + 1]);
+            newBuffer.push_back(buffer[index + 2]);
+        }
+        
+        return newBuffer;
+    }
 
     class Mesh
     {

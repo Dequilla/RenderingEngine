@@ -20,6 +20,8 @@ namespace rg
         std::chrono::seconds seconds() const;
         std::chrono::minutes minutes() const;
         std::chrono::hours hours() const;
+
+        std::chrono::duration<double> delta_seconds() const;
     };
 
     struct ClockState

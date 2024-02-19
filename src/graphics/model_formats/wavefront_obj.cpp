@@ -21,7 +21,7 @@ namespace rg
         return elements;
     }
 
-    std::optional<rg::Vertex> WavefrontOBJ_ModelLoader::processVertex(const std::string& line) const
+    std::optional<rg::wavefront::Vertex> WavefrontOBJ_ModelLoader::processVertex(const std::string& line) const
     {
         // Format:
         // v 0.123 0.234 0.345 1.0
@@ -47,13 +47,46 @@ namespace rg
         if(fc.size() < 3)
         {
             // TODO: Tell user about model error in some type of debug mode
+            assert(false && "Error in WavefrontOBJ_ModelLoader::processVertex()");
             return std::nullopt;
         }
 
-        return rg::Vertex({fc[0], fc[1], fc[2]});
+        return rg::wavefront::Vertex({fc[0], fc[1], fc[2]});
     }
 
-    std::optional<std::vector<rg::Index>> WavefrontOBJ_ModelLoader::processIndex(const std::string& line) const
+    std::optional<rg::wavefront::Normal> WavefrontOBJ_ModelLoader::processNormal(const std::string& line) const
+    {
+        // Normals:
+        // vn 1.2 1.2 1.2
+        std::vector<std::string> components = splitString(line, ' ');
+
+        if(components.empty() || components.size() < 3)
+            return std::nullopt;
+
+        std::vector<float> fc;
+        for( std::string& comp : components)
+        {
+            try
+            {
+                fc.push_back(std::stof(comp));
+            }
+            catch(std::invalid_argument e)
+            {
+                continue;
+            }
+        }
+
+        if(fc.size() < 3)
+        {
+            // TODO: Tell user about model error in some type of debug mode
+            assert(false && "Error in WavefrontOBJ_ModelLoader::processNormal()");
+            return std::nullopt;
+        }
+
+        return rg::wavefront::Normal({fc[0], fc[1], fc[2]});
+    }
+
+    std::optional<std::vector<rg::wavefront::Index>> WavefrontOBJ_ModelLoader::processIndex(const std::string& line) const
     {
         // Formats:
         // f v1 v2 v3 ....
@@ -66,29 +99,55 @@ namespace rg
         if(components.empty() || components.size() < 3)
             return std::nullopt;
 
-        std::vector<rg::Index> indices;
+        std::vector<rg::wavefront::Index> indices;
         for( std::string& comp : components )
         {
             if(comp.size() < 1) continue;
             
             std::vector<std::string> indicesStr = splitString(comp, '/');
-            if(indicesStr.empty())
+            if(indicesStr.empty() || indicesStr[0].find('f') != std::string::npos)
                 continue;
 
-            for( std::string& indexStr : indicesStr )
+            try
             {
-                try
+                rg::wavefront::Index index; 
+
+                if(indicesStr.size() >= 1)
                 {
-                    rg::Index index = std::stoull(indexStr) - 1;
-                    assert(index < 0 && "Negative index in wavefront model loaded.");
-                    indices.push_back(index);
-                    break; // TODO Break for now, other types of indices will be handled later 
+                    // Only vertex
+                    index.vertex = std::stoull(indicesStr.at(0));
                 }
-                catch(std::invalid_argument e)
+                
+                if(indicesStr.size() == 2)
                 {
-                    continue;
+                    // TexCoord also
+                    index.texcoord = std::stoull(indicesStr.at(1));
                 }
+                
+                if(indicesStr.size() >= 3)
+                {
+
+                    // TexCoords and Normals too
+                    try
+                    {
+                        // Could be empty so just ignore if the case
+                        index.texcoord = std::stoull(indicesStr.at(1));
+                    }
+                    catch(std::invalid_argument e)
+                    {
+                    }
+
+                    // Normal
+                    index.normal = std::stoull(indicesStr.at(2));
+                }
+
+                indices.push_back(index);
+            } 
+            catch(std::invalid_argument e)
+            {
+                std::cout << "failed with on index parse => " << comp << std::endl;
             }
+            
         }
 
         if(indices.empty()) 
@@ -101,7 +160,7 @@ namespace rg
 
             if(indices.size() > 3)
             {
-                indices = rg::triangulate(indices);
+                indices = rg::triangulate<rg::wavefront::Index>(indices);
             }
 
             return indices;
@@ -136,13 +195,38 @@ namespace rg
 
     void WavefrontOBJ_ModelLoader::finishCurrentMesh()
     {
+        // TODO: Construct rg::Vertex from list of vertices, normals and indices.
+       
         if(!m_currVertices.empty() && !m_currIndices.empty())
         {
-            std::cout << "Total indices: " << m_currIndices.size() << std::endl;
-            m_currModel.add(m_currVertices, m_currIndices);    
+            rg::VertexBuffer vb;
+            rg::IndexBuffer ib;
+            for( rg::wavefront::Index& index : m_currIndices)
+            {
+                // All indexes in OBJ are 1-based.
+                
+                rg::Vertex vert;
+
+                rg::wavefront::Vertex wvert = m_currVertices.at(index.vertex - 1);
+                vert.position = { wvert.x, wvert.y, wvert.z };
+
+                assert(!m_currNormals.empty() && "No normals loaded for a model...");
+                rg::wavefront::Normal wnorm = m_currNormals.at(index.normal - 1);
+                vert.normal = { wnorm.x, wnorm.y, wnorm.z };
+
+                // TODO: TexCoords
+
+                vb.push_back(vert);
+                ib.push_back(vb.size() - 1);
+            }
+
             m_currVertices.clear();
             m_currIndices.clear();
+            m_currNormals.clear();
+
+            m_currModel.add(vb, ib);    
         }
+  
     }
 
     rg::WavefrontOBJ_ModelLoader::LineData WavefrontOBJ_ModelLoader::processStrLine(const std::string& line) const
@@ -153,16 +237,23 @@ namespace rg
         if(line[0] == 'v' && line[1] == ' ')
         {
             // Parse vertex
-            std::optional<rg::Vertex> vert = processVertex(line);
+            std::optional<rg::wavefront::Vertex> vert = processVertex(line);
             if(!vert.has_value())
                 return std::nullopt;
             return vert.value();
 
         }
+        else if(line[0] == 'v' && line[1] == 'n')
+        {
+            std::optional<rg::wavefront::Normal> norm = processNormal(line);
+            if(!norm.has_value())
+                return std::nullopt;
+            return norm.value();
+        }
         else if(line[0] == 'f' && line[1] == ' ')
         {
             // Parse index
-            std::optional<std::vector<rg::Index>> inde = processIndex(line);
+            std::optional<std::vector<rg::wavefront::Index>> inde = processIndex(line);
             if(!inde.has_value())
                 return std::nullopt;
             return inde.value();
@@ -193,15 +284,19 @@ namespace rg
 
     void WavefrontOBJ_ModelLoader::processLineData(const LineData& data)
     {
-        if(std::holds_alternative<rg::Vertex>(data))
+        if(std::holds_alternative<rg::wavefront::Vertex>(data))
         {
-            m_currVertices.push_back(std::get<rg::Vertex>(data));
+            m_currVertices.push_back(std::get<rg::wavefront::Vertex>(data));
         }
-        else if(std::holds_alternative<std::vector<rg::Index>>(data))
+        else if(std::holds_alternative<rg::wavefront::Normal>(data))
         {
-            std::vector<rg::Index> indices = std::get<std::vector<rg::Index>>(data);
+            m_currNormals.push_back(std::get<rg::wavefront::Normal>(data));
+        }
+        else if(std::holds_alternative<std::vector<rg::wavefront::Index>>(data))
+        {
+            std::vector<rg::wavefront::Index> indices = std::get<std::vector<rg::wavefront::Index>>(data);
 
-            for( rg::Index index : indices  )
+            for( rg::wavefront::Index index : indices)
                 m_currIndices.push_back(index);
         }
         else if(std::holds_alternative<rg::WavefrontOBJ_ModelLoader::ObjectGroup>(data))
@@ -219,6 +314,7 @@ namespace rg
 
         m_currModel = rg::Model();
         m_currVertices.clear();
+        m_currNormals.clear();
         m_currIndices.clear();
 
         std::string line;

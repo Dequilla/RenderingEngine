@@ -7,23 +7,52 @@
 
 namespace rg
 {   
+    namespace wavefront
+    {
+
+        struct Vertex
+        {
+            float x;
+            float y;
+            float z;
+        };
+
+        struct Normal
+        {
+            float x;
+            float y;
+            float z;
+        };
+
+        struct Index
+        {
+            uint32_t vertex;
+            uint32_t texcoord;
+            uint32_t normal;
+            // TODO: Add tex coord index
+        };
+    }
+
 
     class WavefrontOBJ_ModelLoader : public rg::ModelLoader
     {
     protected:
         rg::Model m_currModel;
-        VertexBuffer m_currVertices;
-        IndexBuffer m_currIndices;         
+
+        std::vector<rg::wavefront::Vertex> m_currVertices;
+        std::vector<rg::wavefront::Normal> m_currNormals;
+        std::vector<rg::wavefront::Index> m_currIndices;
 
         struct ObjectGroup 
         {
             std::string name;
         };
 
-        using LineData = std::variant<rg::Vertex, std::vector<rg::Index>, ObjectGroup, std::nullopt_t>;
+        using LineData = std::variant<rg::wavefront::Vertex, rg::wavefront::Normal, std::vector<rg::wavefront::Index>, ObjectGroup, std::nullopt_t>;
 
-        std::optional<rg::Vertex> processVertex(const std::string& line) const;
-        std::optional<std::vector<rg::Index>> processIndex(const std::string& line) const;
+        std::optional<rg::wavefront::Vertex> processVertex(const std::string& line) const;
+        std::optional<rg::wavefront::Normal> processNormal(const std::string& line) const;
+        std::optional<std::vector<rg::wavefront::Index>> processIndex(const std::string& line) const;
         std::optional<rg::WavefrontOBJ_ModelLoader::ObjectGroup> processObjectGroup(const std::string& line) const;
 
         void finishCurrentMesh();

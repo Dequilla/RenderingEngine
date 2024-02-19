@@ -28,6 +28,11 @@ namespace rg
         return std::chrono::duration_cast<std::chrono::hours>(ns);
     }
 
+    std::chrono::duration<double> Duration::delta_seconds() const
+    {
+        return std::chrono::duration_cast<std::chrono::duration<double>>(ns);
+    }
+
     Duration ClockState::elapsed() const
     {
         return Duration(end - start);

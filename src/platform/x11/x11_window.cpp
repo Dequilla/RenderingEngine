@@ -273,7 +273,7 @@ namespace rg
 
                 case KeyRelease:
                 {
-                    event.type = EventType::KeyPressed;
+                    event.type = EventType::KeyReleased;
                     event.key.code = rg::x11::getKeyCode(&xevent.xkey);
                     break;
                 }
