@@ -9,8 +9,8 @@
 const size_t WIDTH = 1280;
 const size_t HEIGHT = 720;
 
-const float mouse_sens = 0.01;
-const double movement_speed = 1.2f;
+const float mouse_sens = 0.04;
+const double movement_speed = 2.2f;
 
 int main()
 {
@@ -23,8 +23,8 @@ int main()
 
     rg::WavefrontOBJ_ModelLoader objLoader;
     //std::optional<rg::Model> objmodel = objLoader.load("./models/Square/square_tri_normals.obj");
-    //std::optional<rg::Model> objmodel = objLoader.load("./models/Duck/12248_Bird_v1_L2.obj");
-    std::optional<rg::Model> objmodel = objLoader.load("./models/Church/church_tri_normals.obj");
+    std::optional<rg::Model> objmodel = objLoader.load("./models/Duck/12248_Bird_v1_L2.obj");
+    //std::optional<rg::Model> objmodel = objLoader.load("./models/Church/church_tri_normals.obj");
     if(objmodel.has_value())
         std::cout << "Loaded model." << std::endl;
     else
@@ -59,18 +59,6 @@ int main()
         fgShader->unload();
     }
 
-    rg::VertexBuffer vertices = {
-        {0.5f,  0.5f, 0.0f},  // top right
-        {0.5f, -0.5f, 0.0f},  // bottom right
-        {-0.5f, -0.5f, 0.0f},  // bottom left
-        {-0.5f,  0.5f, 0.0f}   // top left 
-    };
-    rg::IndexBuffer indices = {  // note that we start from 0!
-        0, 1, 3,  // first Triangle
-        1, 2, 3   // second Triangle
-    };
-    
-    std::unique_ptr<rg::Mesh> mesh = rg::Mesh::create(vertices, indices);
 
     sprogram->use();
     
@@ -82,6 +70,7 @@ int main()
 
     // Model translations and rotations
     glm::mat4 model = glm::mat4(1.0f);
+    model = glm::rotate(model, glm::degrees(90.f), glm::vec3(1.f, 0.f, 0.f));
     model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
     model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
     sprogram->setMat4("model", model); 

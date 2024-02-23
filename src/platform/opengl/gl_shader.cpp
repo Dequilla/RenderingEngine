@@ -69,7 +69,7 @@ namespace rg::opengl
             return false;
         }
 
-        m_id = gl::createShader(shader_type_to_glenum(shaderType));
+        m_id = gl::glCreateShader(shader_type_to_glenum(shaderType));
         if(m_id == 0)
         {
             std::cout << "Could not create GL shader: " << source << std::endl;
@@ -77,15 +77,15 @@ namespace rg::opengl
         }
         
         const char* cstr = sourceCode.c_str();
-        gl::shaderSource(m_id, 1, &cstr, NULL);
-        gl::compileShader(m_id);
+        gl::glShaderSource(m_id, 1, &cstr, NULL);
+        gl::glCompileShader(m_id);
 
         int success = 0;
-        gl::getShaderiv(m_id, GL_COMPILE_STATUS, &success);
+        gl::glGetShaderiv(m_id, GL_COMPILE_STATUS, &success);
         if(!success)
         {
             std::string infoLog(512, '\0');
-            gl::getShaderInfoLog(m_id, 512, NULL, infoLog.data());
+            gl::glGetShaderInfoLog(m_id, 512, NULL, infoLog.data());
             this->unload();
             std::cout << "Shader compilation failed: " << infoLog << std::endl;
             return false;
@@ -96,13 +96,13 @@ namespace rg::opengl
 
     void GLShader::unload()
     {
-        gl::deleteShader(m_id);
+        gl::glDeleteShader(m_id);
         m_id = 0;
     }
 
     GLShaderProgram::GLShaderProgram()
     {
-        m_id = gl::createProgram();
+        m_id = gl::glCreateProgram();
     }
 
     GLShaderProgram::~GLShaderProgram()
@@ -124,19 +124,19 @@ namespace rg::opengl
     {
         const GLShader& glshader = static_cast<const GLShader&>(shader);
 
-        gl::attachShader(m_id, glshader.m_id);
+        gl::glAttachShader(m_id, glshader.m_id);
     }
 
     bool GLShaderProgram::finish()
     {
-        gl::linkProgram(m_id);
+        gl::glLinkProgram(m_id);
 
         int success = 0;
-        gl::getProgramiv(m_id, GL_LINK_STATUS, &success);
+        gl::glGetProgramiv(m_id, GL_LINK_STATUS, &success);
         if(!success)
         {
             std::string infoLog(512, '\0');
-            gl::getProgramInfoLog(m_id, 512, NULL, infoLog.data());
+            gl::glGetProgramInfoLog(m_id, 512, NULL, infoLog.data());
             std::cout << "Unable to link shader program: " << infoLog << std::endl;
             return false;
         }
@@ -146,18 +146,18 @@ namespace rg::opengl
 
     void GLShaderProgram::unload()
     {
-        gl::deleteProgram(m_id);
+        gl::glDeleteProgram(m_id);
     }
 
     void GLShaderProgram::use() const
     {
-        gl::useProgram(m_id);
+        gl::glUseProgram(m_id);
     }
 
     void GLShaderProgram::setMat4(const std::string& name, const glm::mat4& matrix) const
     {
-        gl::uniformMatrix4fv(
-            gl::getUniformLocation(
+        gl::glUniformMatrix4fv(
+            gl::glGetUniformLocation(
                 m_id, 
                 name.c_str()
             ), 

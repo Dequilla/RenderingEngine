@@ -8,37 +8,37 @@ namespace gl
 {
     ///////////////////////////
     // OpenGL function ptrs
-    FP_SHADER_SOURCE shaderSource;  
-    FP_CREATE_SHADER createShader;
-    FP_DELETE_SHADER deleteShader;
-    FP_COMPILE_SHADER compileShader;
-    FP_ATTACH_SHADER attachShader;
-    FP_GET_SHADER_IV getShaderiv;
-    FP_GET_SHADER_INFO_LOG getShaderInfoLog;
+    FP_SHADER_SOURCE glShaderSource;  
+    FP_CREATE_SHADER glCreateShader;
+    FP_DELETE_SHADER glDeleteShader;
+    FP_COMPILE_SHADER glCompileShader;
+    FP_ATTACH_SHADER glAttachShader;
+    FP_GET_SHADER_IV glGetShaderiv;
+    FP_GET_SHADER_INFO_LOG glGetShaderInfoLog;
     
-    FP_CREATE_PROGRAM createProgram;
-    FP_LINK_PROGRAM linkProgram;
-    FP_GET_PROGRAM_IV getProgramiv;
-    FP_GET_PROGRAM_INFO_LOG getProgramInfoLog;
-    FP_DELETE_PROGRAM deleteProgram;
-    FP_USE_PROGRAM useProgram;
+    FP_CREATE_PROGRAM glCreateProgram;
+    FP_LINK_PROGRAM glLinkProgram;
+    FP_GET_PROGRAM_IV glGetProgramiv;
+    FP_GET_PROGRAM_INFO_LOG glGetProgramInfoLog;
+    FP_DELETE_PROGRAM glDeleteProgram;
+    FP_USE_PROGRAM glUseProgram;
 
-    FP_UNIFORM_MATRIX4FV uniformMatrix4fv;
-    FP_GET_UNIFORM_LOCATION getUniformLocation;
+    FP_UNIFORM_MATRIX4FV glUniformMatrix4fv;
+    FP_GET_UNIFORM_LOCATION glGetUniformLocation;
 
-    FP_GEN_VERTEX_ARRAYS genVertexArrays;
-    FP_BIND_VERTEX_ARRAY bindVertexArray;
-    FP_VERTEX_ATTRIB_POINTER vertexAttribPointer;
-    FP_ENABLE_VERTEX_ATTRIB_ARRAY enableVertexAttribArray;
-    FP_DELETE_VERTEX_ARRAYS deleteVertexArrays;
+    FP_GEN_VERTEX_ARRAYS glGenVertexArrays;
+    FP_BIND_VERTEX_ARRAY glBindVertexArray;
+    FP_VERTEX_ATTRIB_POINTER glVertexAttribPointer;
+    FP_ENABLE_VERTEX_ATTRIB_ARRAY glEnableVertexAttribArray;
+    FP_DELETE_VERTEX_ARRAYS glDeleteVertexArrays;
 
-    FP_GEN_BUFFERS genBuffers;
-    FP_BIND_BUFFER bindBuffer;
-    FP_BUFFER_DATA bufferData;
-    FP_DELETE_BUFFERS deleteBuffers;
+    FP_GEN_BUFFERS glGenBuffers;
+    FP_BIND_BUFFER glBindBuffer;
+    FP_BUFFER_DATA glBufferData;
+    FP_DELETE_BUFFERS glDeleteBuffers;
 
-    FP_DRAW_ELEMENTS drawElements;
-    FP_DRAW_ARRAYS drawArrays;
+    FP_DRAW_ELEMENTS glDrawElements;
+    FP_DRAW_ARRAYS glDrawArrays;
 
     void* getProcAddress(const char* funcName)
     {
@@ -51,37 +51,37 @@ namespace gl
 
     void initProcs()
     {
-        shaderSource = (FP_SHADER_SOURCE)getProcAddress("glShaderSource");  
-        createShader = (FP_CREATE_SHADER)getProcAddress("glCreateShader");
-        deleteShader = (FP_DELETE_SHADER)getProcAddress("glDeleteShader");
-        compileShader = (FP_COMPILE_SHADER)getProcAddress("glCompileShader");
-        attachShader = (FP_ATTACH_SHADER)getProcAddress("glAttachShader");
-        getShaderiv = (FP_GET_SHADER_IV)getProcAddress("glGetShaderiv");
-        getShaderInfoLog = (FP_GET_SHADER_INFO_LOG)getProcAddress("glGetShaderInfoLog");
+        glShaderSource = (FP_SHADER_SOURCE)getProcAddress("glShaderSource");  
+        glCreateShader = (FP_CREATE_SHADER)getProcAddress("glCreateShader");
+        glDeleteShader = (FP_DELETE_SHADER)getProcAddress("glDeleteShader");
+        glCompileShader = (FP_COMPILE_SHADER)getProcAddress("glCompileShader");
+        glAttachShader = (FP_ATTACH_SHADER)getProcAddress("glAttachShader");
+        glGetShaderiv = (FP_GET_SHADER_IV)getProcAddress("glGetShaderiv");
+        glGetShaderInfoLog = (FP_GET_SHADER_INFO_LOG)getProcAddress("glGetShaderInfoLog");
 
-        createProgram = (FP_CREATE_PROGRAM)getProcAddress("glCreateProgram");
-        linkProgram = (FP_LINK_PROGRAM)getProcAddress("glLinkProgram");
-        getProgramiv = (FP_GET_PROGRAM_IV)getProcAddress("glGetProgramiv");
-        getProgramInfoLog = (FP_GET_PROGRAM_INFO_LOG)getProcAddress("glGetProgramInfoLog");
-        deleteProgram = (FP_DELETE_PROGRAM)getProcAddress("glDeleteProgram");
-        useProgram = (FP_USE_PROGRAM)getProcAddress("glUseProgram");
+        glCreateProgram = (FP_CREATE_PROGRAM)getProcAddress("glCreateProgram");
+        glLinkProgram = (FP_LINK_PROGRAM)getProcAddress("glLinkProgram");
+        glGetProgramiv = (FP_GET_PROGRAM_IV)getProcAddress("glGetProgramiv");
+        glGetProgramInfoLog = (FP_GET_PROGRAM_INFO_LOG)getProcAddress("glGetProgramInfoLog");
+        glDeleteProgram = (FP_DELETE_PROGRAM)getProcAddress("glDeleteProgram");
+        glUseProgram = (FP_USE_PROGRAM)getProcAddress("glUseProgram");
 
-        uniformMatrix4fv = (FP_UNIFORM_MATRIX4FV)getProcAddress("glUniformMatrix4fv");
-        getUniformLocation = (FP_GET_UNIFORM_LOCATION)getProcAddress("glGetUniformLocation");
+        glUniformMatrix4fv = (FP_UNIFORM_MATRIX4FV)getProcAddress("glUniformMatrix4fv");
+        glGetUniformLocation = (FP_GET_UNIFORM_LOCATION)getProcAddress("glGetUniformLocation");
 
-        genVertexArrays = (FP_GEN_VERTEX_ARRAYS)getProcAddress("glGenVertexArrays");
-        bindVertexArray = (FP_BIND_VERTEX_ARRAY)getProcAddress("glBindVertexArray");
-        vertexAttribPointer = (FP_VERTEX_ATTRIB_POINTER)getProcAddress("glVertexAttribPointer");
-        enableVertexAttribArray = (FP_ENABLE_VERTEX_ATTRIB_ARRAY)getProcAddress("glEnableVertexAttribArray");
-        deleteVertexArrays = (FP_DELETE_VERTEX_ARRAYS)getProcAddress("glDeleteVertexArrays");
+        glGenVertexArrays = (FP_GEN_VERTEX_ARRAYS)getProcAddress("glGenVertexArrays");
+        glBindVertexArray = (FP_BIND_VERTEX_ARRAY)getProcAddress("glBindVertexArray");
+        glVertexAttribPointer = (FP_VERTEX_ATTRIB_POINTER)getProcAddress("glVertexAttribPointer");
+        glEnableVertexAttribArray = (FP_ENABLE_VERTEX_ATTRIB_ARRAY)getProcAddress("glEnableVertexAttribArray");
+        glDeleteVertexArrays = (FP_DELETE_VERTEX_ARRAYS)getProcAddress("glDeleteVertexArrays");
 
-        genBuffers = (FP_GEN_BUFFERS)getProcAddress("glGenBuffers");
-        bindBuffer = (FP_BIND_BUFFER)getProcAddress("glBindBuffer");
-        bufferData = (FP_BUFFER_DATA)getProcAddress("glBufferData");
-        deleteBuffers = (FP_DELETE_BUFFERS)getProcAddress("glDeleteBuffers");
+        glGenBuffers = (FP_GEN_BUFFERS)getProcAddress("glGenBuffers");
+        glBindBuffer = (FP_BIND_BUFFER)getProcAddress("glBindBuffer");
+        glBufferData = (FP_BUFFER_DATA)getProcAddress("glBufferData");
+        glDeleteBuffers = (FP_DELETE_BUFFERS)getProcAddress("glDeleteBuffers");
 
-        drawElements = (FP_DRAW_ELEMENTS)getProcAddress("glDrawElements");
-        drawArrays = (FP_DRAW_ARRAYS)getProcAddress("glDrawArrays");
+        glDrawElements = (FP_DRAW_ELEMENTS)getProcAddress("glDrawElements");
+        glDrawArrays = (FP_DRAW_ARRAYS)getProcAddress("glDrawArrays");
     }
 
 }

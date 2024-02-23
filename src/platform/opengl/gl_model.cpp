@@ -8,34 +8,34 @@ namespace rg::opengl
 
     GLMesh::GLMesh(const VertexBuffer& vertices, const IndexBuffer& indices)
     {
-        gl::genVertexArrays(1, &m_vao);
-        gl::genBuffers(1, &m_vbo);
-        gl::genBuffers(1, &m_ebo);
+        gl::glGenVertexArrays(1, &m_vao);
+        gl::glGenBuffers(1, &m_vbo);
+        gl::glGenBuffers(1, &m_ebo);
 
-        gl::bindVertexArray(m_vao);
+        gl::glBindVertexArray(m_vao);
 
-        gl::bindBuffer(GL_ARRAY_BUFFER, m_vbo);
-        gl::bufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
+        gl::glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+        gl::glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
 
-        gl::bindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
-        gl::bufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(rg::Index), indices.data(), GL_STATIC_DRAW);
+        gl::glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
+        gl::glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(rg::Index), indices.data(), GL_STATIC_DRAW);
 
-        gl::vertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-        gl::enableVertexAttribArray(0);
+        gl::glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+        gl::glEnableVertexAttribArray(0);
 
-        gl::vertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-        gl::enableVertexAttribArray(1);
+        gl::glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+        gl::glEnableVertexAttribArray(1);
 
-        gl::bindVertexArray(0);
+        gl::glBindVertexArray(0);
 
         m_indexCount = indices.size();
     }
 
     GLMesh::~GLMesh()
     {
-        gl::deleteBuffers(1, &m_ebo);
-        gl::deleteBuffers(1, &m_vbo);
-        gl::deleteVertexArrays(1, &m_vao);
+        gl::glDeleteBuffers(1, &m_ebo);
+        gl::glDeleteBuffers(1, &m_vbo);
+        gl::glDeleteVertexArrays(1, &m_vao);
     }
 
 }

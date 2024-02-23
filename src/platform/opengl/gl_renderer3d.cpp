@@ -38,9 +38,9 @@ namespace rg::opengl
     {
         const rg::opengl::GLMesh& glmesh = static_cast<const rg::opengl::GLMesh&>(mesh); 
 
-        gl::bindVertexArray(glmesh.m_vao);
-        gl::drawElements(GL_TRIANGLES, glmesh.m_indexCount, GL_UNSIGNED_INT, 0);
-        gl::bindVertexArray(0);
+        gl::glBindVertexArray(glmesh.m_vao);
+        gl::glDrawElements(GL_TRIANGLES, glmesh.m_indexCount, GL_UNSIGNED_INT, 0);
+        gl::glBindVertexArray(0);
     }
 
     void GLRenderer3D::draw(const Model& model)
