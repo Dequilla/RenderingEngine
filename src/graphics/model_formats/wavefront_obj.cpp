@@ -86,6 +86,36 @@ namespace rg
         return rg::wavefront::Normal({fc[0], fc[1], fc[2]});
     }
 
+    std::optional<rg::wavefront::TexCoord> WavefrontOBJ_ModelLoader::processTexCoord(const std::string& line) const
+    {
+        std::vector<std::string> components = splitString(line, ' ');  
+
+        if(components.empty() || components.size() < 2 || components.size() > 4)
+            return std::nullopt;
+        
+        std::vector<float> texCoords;
+        for( std::string& comp : components )
+        {
+            try
+            {
+                texCoords.push_back(std::stof(comp));
+            }
+            catch(std::invalid_argument e)
+            {
+                continue;
+            }
+        }
+
+        if(texCoords.size() < 2)
+        {
+            // Can be 2 or 3 components
+            assert( false && "Error in WavefrontOBJ_ModelLoader::processTexCoord()");
+            return std::nullopt;
+        }
+
+        return rg::wavefront::TexCoord({texCoords[0], texCoords[1]});
+    }
+
     std::optional<std::vector<rg::wavefront::Index>> WavefrontOBJ_ModelLoader::processIndex(const std::string& line) const
     {
         // Formats:
@@ -145,7 +175,8 @@ namespace rg
             } 
             catch(std::invalid_argument e)
             {
-                std::cout << "failed with on index parse => " << comp << std::endl;
+                std::cout << "Failed with on index parse => " << comp << std::endl;
+                std::cout << "  line => " << line << std::endl;
             }
             
         }
@@ -214,7 +245,9 @@ namespace rg
                 rg::wavefront::Normal wnorm = m_currNormals.at(index.normal - 1);
                 vert.normal = { wnorm.x, wnorm.y, wnorm.z };
 
-                // TODO: TexCoords
+                assert(!m_currTexCoords.empty() && "No tex coords loaded for a model...");
+                rg::wavefront::TexCoord txc = m_currTexCoords.at(index.texcoord - 1);
+                vert.texCoord = { txc.x, txc.y };
 
                 vb.push_back(vert);
                 ib.push_back(vb.size() - 1);
@@ -249,6 +282,13 @@ namespace rg
             if(!norm.has_value())
                 return std::nullopt;
             return norm.value();
+        }
+        else if(line[0] == 'v' && line[1] == 't')
+        {
+            std::optional<rg::wavefront::TexCoord> texcoord = processTexCoord(line);
+            if(!texcoord.has_value())
+                return std::nullopt;
+            return texcoord.value();
         }
         else if(line[0] == 'f' && line[1] == ' ')
         {
@@ -291,6 +331,10 @@ namespace rg
         else if(std::holds_alternative<rg::wavefront::Normal>(data))
         {
             m_currNormals.push_back(std::get<rg::wavefront::Normal>(data));
+        }
+        else if(std::holds_alternative<rg::wavefront::TexCoord>(data))
+        {
+            m_currTexCoords.push_back(std::get<rg::wavefront::TexCoord>(data));
         }
         else if(std::holds_alternative<std::vector<rg::wavefront::Index>>(data))
         {

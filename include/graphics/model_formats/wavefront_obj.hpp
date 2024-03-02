@@ -24,6 +24,12 @@ namespace rg
             float z;
         };
 
+        struct TexCoord
+        {
+            float x;
+            float y;
+        };
+
         struct Index
         {
             uint32_t vertex;
@@ -41,6 +47,7 @@ namespace rg
 
         std::vector<rg::wavefront::Vertex> m_currVertices;
         std::vector<rg::wavefront::Normal> m_currNormals;
+        std::vector<rg::wavefront::TexCoord> m_currTexCoords;
         std::vector<rg::wavefront::Index> m_currIndices;
 
         struct ObjectGroup 
@@ -48,10 +55,11 @@ namespace rg
             std::string name;
         };
 
-        using LineData = std::variant<rg::wavefront::Vertex, rg::wavefront::Normal, std::vector<rg::wavefront::Index>, ObjectGroup, std::nullopt_t>;
+        using LineData = std::variant<rg::wavefront::Vertex, rg::wavefront::Normal, rg::wavefront::TexCoord, std::vector<rg::wavefront::Index>, ObjectGroup, std::nullopt_t>;
 
         std::optional<rg::wavefront::Vertex> processVertex(const std::string& line) const;
         std::optional<rg::wavefront::Normal> processNormal(const std::string& line) const;
+        std::optional<rg::wavefront::TexCoord> processTexCoord(const std::string& line) const;
         std::optional<std::vector<rg::wavefront::Index>> processIndex(const std::string& line) const;
         std::optional<rg::WavefrontOBJ_ModelLoader::ObjectGroup> processObjectGroup(const std::string& line) const;
 

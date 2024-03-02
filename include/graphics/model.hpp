@@ -26,6 +26,13 @@ namespace rg
             float y;
             float z;
         } normal;
+
+        struct TexCoord
+        {
+            float x;
+            float y;
+        } texCoord;
+
     };
 
     using VertexBuffer = std::vector<Vertex>;

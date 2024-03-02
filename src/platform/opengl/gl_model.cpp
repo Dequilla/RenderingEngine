@@ -20,10 +20,13 @@ namespace rg::opengl
         gl::glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
         gl::glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(rg::Index), indices.data(), GL_STATIC_DRAW);
 
-        gl::glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+        gl::glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
         gl::glEnableVertexAttribArray(0);
 
-        gl::glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+        gl::glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+        gl::glEnableVertexAttribArray(1);
+
+        gl::glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
         gl::glEnableVertexAttribArray(1);
 
         gl::glBindVertexArray(0);
